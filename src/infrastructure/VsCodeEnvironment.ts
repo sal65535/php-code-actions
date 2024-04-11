@@ -69,7 +69,7 @@ export class VsCodeEnvironment implements VsCode {
     const uri = editor.document.uri;
     const insertSpaces: boolean = vscode.workspace.getConfiguration('editor', uri).get('insertSpaces') as boolean;
 
-    if (insertSpaces) {
+    if (!insertSpaces) {
       return '\t';
     }
 
