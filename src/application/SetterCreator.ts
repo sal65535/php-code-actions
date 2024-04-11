@@ -15,30 +15,20 @@ export default class SetterCreator {
     const breakLine = this.vsCode.getEditorPreferences().breakLine;
     const indentation = this.vsCode.getEditorPreferences().indentation;
 
-    const phpDocPre = `${indentation}/**`;
-    const phpDocPost = `${breakLine}${indentation} */`;
-    const methodPre = `${breakLine}${indentation}public function `;
-    const methodPost = `(${this.propertyCreator.getForConstructor(property)})${breakLine}${indentation}{`;
-    const methodEnd = `${indentation}${breakLine}${indentation}}`;
+    const methodPre = `${indentation}public function `;
+    const methodParam = `(${this.propertyCreator.getForConstructor(property)})`;
+    const methodPost = `: void${breakLine}${indentation}{`;
+    const methodEnd = `${breakLine}${indentation}}`;
 
     let method = '';
 
-    method = method.concat(phpDocPre);
-    if (property.shouldBeOnDoc()) {
-      method = method.concat(`${breakLine}${indentation} * `).concat(this.propertyCreator.getForDoc(property));
-    }
     method = method
-      .concat(`${breakLine}${indentation} * `)
-      .concat(`@return self`)
-      .concat(phpDocPost)
       .concat(methodPre)
       .concat(property.setterName())
+      .concat(methodParam)
       .concat(methodPost)
       .concat(`${breakLine}${indentation.repeat(2)}`)
-      .concat(`$this->${property.name} = $${property.name};`)
-      .concat(`${breakLine}${indentation.repeat(2)}`)
-      .concat('return $this')
-      .concat(';');
+      .concat(`$this->${property.name} = $${property.name};`);
 
     return method.concat(methodEnd);
   }

@@ -16,21 +16,16 @@ export default class GetterCreator {
     const breakLine = this.vsCode.getEditorPreferences().breakLine;
     const indentation = this.vsCode.getEditorPreferences().indentation;
 
-    const phpDocPre = `${indentation}/**`;
-    const phpDocPost = `${breakLine}${indentation} */`;
-    const getterPre = `${breakLine}${indentation}public function `;
-    const getterPost = `()${breakLine}${indentation}{`;
-    const getterEnd = `${indentation}${breakLine}${indentation}}`;
+    const getterPre = `${indentation}public function `;
+    const getterPost = `${breakLine}${indentation}{`;
+    const getterEnd = `${breakLine}${indentation}}`;
 
     let getter = '';
 
     getter = getter
-      .concat(phpDocPre)
-      .concat(`${breakLine}${indentation} * `)
-      .concat(this.propertyCreator.getForReturnDoc(property))
-      .concat(phpDocPost)
       .concat(getterPre)
       .concat(this.getterMethod(property))
+      .concat(`(): ${property.type}`)
       .concat(getterPost)
       .concat(`${breakLine}${indentation.repeat(2)}`)
       .concat('return $this->')
