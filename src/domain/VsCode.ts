@@ -12,6 +12,10 @@ export default interface VsCode {
 
   getCurrentLineText(): string;
 
+  getLineText(line: number): string;
+
+  getCurrentPreviousLineText(): string
+
   isType(type: string): boolean;
 
   isPhp(): boolean;
