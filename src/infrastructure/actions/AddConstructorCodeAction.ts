@@ -47,24 +47,11 @@ export class AddConstructorCodeAction implements EditorAction {
     }
 
     const offset = this.classInspector.getOffsetForConstructor();
-    const properties = this.classInspector.getNonPublicProperties();
+    const properties = this.classInspector.getProperties().values();
 
-    let selectedProperties: string[] = [];
-    if (properties.size > 0) {
-      selectedProperties = await this.vsCode.quickPickMultiple(
-        'Add Constructor for',
-        Array.from(properties.values()).map((prop) => prop.name)
-      );
-    }
-
-    const selectedAsArrayOfProperties: Property[] = [];
-    selectedProperties.forEach((p) => {
-      let property = properties.get(p) as Property;
-      selectedAsArrayOfProperties.push(property);
-    });
-
-    const constructor = this.constructorCreator.build(selectedAsArrayOfProperties);
+    const constructor = this.constructorCreator.build([...properties]);
     await this.vsCode.insertText(offset, constructor);
+
     return Promise.resolve();
   }
 }

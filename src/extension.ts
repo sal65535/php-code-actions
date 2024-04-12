@@ -8,9 +8,7 @@ import SetterCreator from './application/SetterCreator';
 import EditorAction from './domain/EditorAction';
 import { AddConstructorCodeAction } from './infrastructure/actions/AddConstructorCodeAction';
 import { AddGetterCodeAction } from './infrastructure/actions/AddGetterCodeAction';
-import { AddPropertyCodeAction } from './infrastructure/actions/AddPropertyCodeAction';
 import { AddSetterCodeAction } from './infrastructure/actions/AddSetterCodeAction';
-import { ReplaceConstructorCodeAction } from './infrastructure/actions/ReplaceConstructorCodeAction';
 import { VsCodeEnvironment } from './infrastructure/VsCodeEnvironment';
 import { AddGetterAndSetterCodeAction } from './infrastructure/actions/AddGetterAndSetterCodeAction';
 
@@ -57,11 +55,9 @@ export const activate = (context: vscode.ExtensionContext) => {
   const getterCreator = new GetterCreator(propertyCreator, vsCode);
   const setterCreator = new SetterCreator(propertyCreator, vsCode);
 
-  actions.push(new ReplaceConstructorCodeAction(vsCode, classInspector, constructorCreator));
   actions.push(new AddConstructorCodeAction(vsCode, classInspector, constructorCreator));
   actions.push(new AddGetterCodeAction(vsCode, classInspector, getterCreator));
   actions.push(new AddGetterAndSetterCodeAction(vsCode, classInspector, getterCreator, setterCreator));
-  actions.push(new AddPropertyCodeAction(vsCode, classInspector, propertyCreator));
   actions.push(new AddSetterCodeAction(vsCode, classInspector, setterCreator));
 
   context.subscriptions.push(

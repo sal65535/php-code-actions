@@ -27,7 +27,6 @@ export class AddSetterCodeAction implements EditorAction {
     }
 
     let properties = this.classInspector.getNonPublicProperties();
-    properties = this.filterWithoutSetter(properties);
 
     if (properties.size <= 0) {
       return false;
@@ -49,26 +48,30 @@ export class AddSetterCodeAction implements EditorAction {
       return Promise.resolve();
     }
 
-    let properties = this.classInspector.getNonPublicProperties();
-    properties = this.filterWithoutSetter(properties);
-
-    const selectedProperties: string[] = await this.vsCode.quickPickMultiple(
-      'Add Setter for',
-      Array.from(properties.values()).map((prop) => prop.name)
+    const nameMatch = this.vsCode.getCurrentLineText().match(
+      /private\s+\$(\w+)\s*(?:(?:\/\*\*)([\s\S]*?)(?:\*\/))?/
     );
 
-    if (selectedProperties.length <= 0) {
+    if (!nameMatch) {
       return Promise.resolve();
     }
 
-    const offset = this.classInspector.getOffsetForGetter();
-    let setter = '';
-    selectedProperties.forEach((p, index) => {
-      let property = properties.get(p) as Property;
-      setter = setter.concat(this.setterCreator.build(property));
-    });
+    const propertyName = nameMatch[1];
 
-    await this.vsCode.insertText(offset, setter);
+    const propertiesArray = Array.from(this.classInspector.getNonPublicProperties().entries());
+    const propertyEntry = propertiesArray.find(([propName, prop]) => propName === propertyName);
+
+    if (!propertyEntry) {
+      return Promise.resolve();
+    }
+
+    const [propName, property] = propertyEntry;
+
+    const setterOffset = this.classInspector.getOffsetForGetter();
+    let getter = '';
+    getter = getter.concat(this.setterCreator.build(property));
+    await this.vsCode.insertText(setterOffset, getter);
+
     return Promise.resolve();
   }
 

@@ -2,7 +2,6 @@ import ClassInspector from '../../application/ClassInspector';
 import GetterCreator from '../../application/GetterCreator';
 import SetterCreator from '../../application/SetterCreator';
 import EditorAction from '../../domain/EditorAction';
-import Property from '../../domain/Property';
 import VsCode from '../../domain/VsCode';
 
 export class AddGetterAndSetterCodeAction implements EditorAction {
@@ -10,7 +9,7 @@ export class AddGetterAndSetterCodeAction implements EditorAction {
     classInspector: ClassInspector;
     getterCreator: GetterCreator;
     setterCreator: SetterCreator;
-    title: string = 'Add Getter and Setter';
+    title: string = 'Getter and Setter';
     command: string = 'php-code-actions.addGetterAndSetter';
 
     constructor(
@@ -34,13 +33,6 @@ export class AddGetterAndSetterCodeAction implements EditorAction {
             return false;
         }
 
-        let properties = this.classInspector.getNonPublicProperties();
-        properties = this.filterWithoutGetter(properties);
-
-        if (properties.size <= 0) {
-            return false;
-        }
-
         return true;
     }
 
@@ -57,47 +49,35 @@ export class AddGetterAndSetterCodeAction implements EditorAction {
             return Promise.resolve();
         }
 
-        let properties = this.classInspector.getNonPublicProperties();
-        properties = this.filterWithoutGetter(properties);
-
-        const selectedProperties: string[] = await this.vsCode.quickPickMultiple(
-            'Add Getter and Setter for',
-            Array.from(properties.values()).map((prop) => prop.name)
+        const nameMatch = this.vsCode.getCurrentLineText().match(
+            /private\s+\$(\w+)\s*(?:(?:\/\*\*)([\s\S]*?)(?:\*\/))?/
         );
 
-        if (selectedProperties.length <= 0) {
+        if (!nameMatch) {
             return Promise.resolve();
         }
 
+        const propertyName = nameMatch[1];
+
+        const propertiesArray = Array.from(this.classInspector.getNonPublicProperties().entries());
+        const propertyEntry = propertiesArray.find(([propName, prop]) => propName === propertyName);
+
+        if (!propertyEntry) {
+            return Promise.resolve();
+        }
+
+        const [propName, property] = propertyEntry;
+
         const getterOffset = this.classInspector.getOffsetForGetter();
         let getter = '';
-        selectedProperties.forEach((p, index) => {
-            let property = properties.get(p) as Property;
-            getter = getter.concat(this.getterCreator.build(property));
-        });
+        getter = getter.concat(this.getterCreator.build(property));
         await this.vsCode.insertText(getterOffset, getter);
 
         const setterOffset = this.classInspector.getOffsetForGetter();
         let setter = '';
-        selectedProperties.forEach((p, index) => {
-            let property = properties.get(p) as Property;
-            setter = setter.concat(this.setterCreator.build(property));
-        });
+        setter = setter.concat(this.setterCreator.build(property));
         await this.vsCode.insertText(setterOffset, setter);
 
         return Promise.resolve();
-    }
-
-    private filterWithoutGetter(properties: Map<string, Property>): Map<string, Property> {
-        const propertiesWithoutGetter = new Map<string, Property>();
-
-        properties.forEach((prop, propName) => {
-            const regex = new RegExp(`return \\$this->${propName};`, 'g');
-            if (-1 === this.vsCode.getText().search(regex)) {
-                return propertiesWithoutGetter.set(propName, prop);
-            }
-        });
-
-        return propertiesWithoutGetter;
     }
 }

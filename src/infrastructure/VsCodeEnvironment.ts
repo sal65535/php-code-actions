@@ -113,7 +113,16 @@ export class VsCodeEnvironment implements VsCode {
 
   getCurrentLineText(): string {
     let curPos = this.getActiveTextEditor().selection.active;
-    return this.getActiveTextEditor().document.lineAt(curPos.line).text;
+    return this.getLineText(curPos.line);
+  }
+
+  getCurrentPreviousLineText(): string {
+    let curPos = this.getActiveTextEditor().selection.active;
+    return this.getLineText(curPos.line - 1);
+  }
+
+  getLineText(line: number): string {
+    return this.getActiveTextEditor().document.lineAt(line).text;
   }
 
   isType(type: string): boolean {
