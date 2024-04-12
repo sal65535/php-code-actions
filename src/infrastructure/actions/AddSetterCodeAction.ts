@@ -66,9 +66,6 @@ export class AddSetterCodeAction implements EditorAction {
     selectedProperties.forEach((p, index) => {
       let property = properties.get(p) as Property;
       setter = setter.concat(this.setterCreator.build(property));
-      if (selectedProperties.length > index + 1) {
-        setter = setter.concat('\n\n');
-      }
     });
 
     await this.vsCode.insertText(offset, setter);
