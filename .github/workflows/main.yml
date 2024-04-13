@@ -1,11 +1,18 @@
 name: Release
 on: push
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: npm install
+      - name: Checkout
+        uses: actions/checkout@v3
       - uses: lannonbr/vsce-action@3.0.0
         with:
-          args: "package"
+          args: "package --allow-star-activation"
+      - run: echo "name=$(ls | grep vsix | sort | tail -n 1)" >> $GITHUB_OUTPUT
+        id: identify-package
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{steps.identify-package.outputs.name}}
