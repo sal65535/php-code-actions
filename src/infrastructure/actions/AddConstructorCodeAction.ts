@@ -9,7 +9,7 @@ export class AddConstructorCodeAction implements EditorAction {
   classInspector: ClassInspector;
   constructorCreator: ConstructorCreator;
   title: string = 'Add Constructor';
-  command: string = 'php-code-actions.addConstructor';
+  command: string = 'php-sculptor.addConstructor';
 
   constructor(vsCode: VsCode, classInspector: ClassInspector, constructorCreator: ConstructorCreator) {
     this.vsCode = vsCode;

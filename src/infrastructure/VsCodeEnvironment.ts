@@ -79,7 +79,7 @@ export class VsCodeEnvironment implements VsCode {
   }
 
   getGetterConfiguration(): GetterConfiguration {
-    const addPrefix = vscode.workspace.getConfiguration('php-code-actions').get('getter.addPrefix', true) as boolean;
+    const addPrefix = vscode.workspace.getConfiguration('php-sculptor').get('getter.addPrefix', true) as boolean;
     return new GetterConfiguration(addPrefix);
   }
 

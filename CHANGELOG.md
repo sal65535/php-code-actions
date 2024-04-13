@@ -1,35 +1,12 @@
 # Change Log
 
-All notable changes to the "php-code-actions" extension will be documented in this file.
+All notable changes to the "php-sculptor" extension will be documented in this file.
 
-### [0.5.1]
+### [1.0.0]
 
-- fix: fix property creator for primitives
-
-### [0.5.0]
-
-- feat: add `add setter` action
-### [0.4.0]
-
-- feat: add default `null` value on nullable arguments.
-- fix: bracket array notation should not be part of argument
-### [0.3.0]
-
-- feat: add replace constructor action
-### [0.2.3]
-
-- docs: update readme
-### [0.2.2]
-
-- fix: property order
-- fix: array types in property
-### [0.2.1]
-
-- fix: getter doc
-### [0.2.0]
-
-- Add AddProperty Code Action
-
-### [0.1.0]
-
-- Initial release
+- Forked base repository
+- Implemented Getter, Setter, Getter and Setter and Costructor snippets
+- Removed Replace Costructor
+- The setter returns void now
+- Getter and setter are typeized
+- Getter, setter and Getter and Setter QuickFix is shown only if the corrispondent piece of code does not exist

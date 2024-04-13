@@ -11,7 +11,7 @@ export class AddGetterAndSetterCodeAction implements EditorAction {
     getterCreator: GetterCreator;
     setterCreator: SetterCreator;
     title: string = 'Getter and Setter';
-    command: string = 'php-code-actions.addGetterAndSetter';
+    command: string = 'php-sculptor.addGetterAndSetter';
 
     constructor(
         vsCode: VsCode,

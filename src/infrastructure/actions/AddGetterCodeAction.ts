@@ -9,7 +9,7 @@ export class AddGetterCodeAction implements EditorAction {
   classInspector: ClassInspector;
   getterCreator: GetterCreator;
   title: string = 'Getter';
-  command: string = 'php-code-actions.addGetter';
+  command: string = 'php-sculptor.addGetter';
 
   constructor(vsCode: VsCode, classInspector: ClassInspector, getterCreator: GetterCreator) {
     this.vsCode = vsCode;

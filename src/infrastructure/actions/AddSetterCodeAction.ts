@@ -9,7 +9,7 @@ export class AddSetterCodeAction implements EditorAction {
   classInspector: ClassInspector;
   setterCreator: SetterCreator;
   title: string = 'Setter';
-  command: string = 'php-code-actions.addSetter';
+  command: string = 'php-sculptor.addSetter';
 
   constructor(vsCode: VsCode, classInspector: ClassInspector, setterCreator: SetterCreator) {
     this.vsCode = vsCode;
