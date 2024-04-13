@@ -26,6 +26,14 @@ export class AddSetterCodeAction implements EditorAction {
       return false;
     }
 
+    const nameMatch = this.vsCode.getCurrentLineText().match(
+      /private\s+\$(\w+)\s*(?:(?:\/\*\*)([\s\S]*?)(?:\*\/))?/
+    );
+
+    if (!nameMatch) {
+      return false;
+    }
+
     let properties = this.classInspector.getNonPublicProperties();
     let propertiesWithoutSetter = this.classInspector.filterWithoutSetter(properties);
 
