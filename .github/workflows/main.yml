@@ -16,5 +16,8 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Install vsce
+        run: npm install -g vsce
+
       - name: Package extension
         run: vsce package
