@@ -22,7 +22,7 @@ jobs:
         run: npm i -g vsce
 
       - name: Publish
-        run: vsce package --no-yarn
+        run: vsce package --no-yarn -o php-sculptor-${{ github.ref_name }}.vsix
 
       - name: Release
         uses: actions/create-release@v1
@@ -39,8 +39,6 @@ jobs:
       - name: Artifacts
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            app/build/outputs/apk/release/app-release-unsigned.apk
-            other/files/as/needed
+          files: /home/runner/work/php-sculptor/php-sculptor/php-sculptor-${{ github.ref_name }}.vsix
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
