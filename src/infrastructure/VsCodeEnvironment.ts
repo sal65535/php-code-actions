@@ -51,7 +51,7 @@ export class VsCodeEnvironment implements VsCode {
 
     const position = editor.document.positionAt(offset.value);
     return editor.edit((edit) => {
-      edit.insert(position, `\n${content}\n\n`);
+      edit.insert(position, `\n${content}\n`);
       vscode.window.showTextDocument(this.getCurrentDocument());
     });
   }

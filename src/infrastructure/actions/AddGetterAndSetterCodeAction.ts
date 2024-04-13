@@ -33,6 +33,12 @@ export class AddGetterAndSetterCodeAction implements EditorAction {
             return false;
         }
 
+        let properties = this.classInspector.getNonPublicProperties();
+
+        if (properties.size <= 0) {
+            return false;
+        }
+
         return true;
     }
 
