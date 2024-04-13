@@ -11,7 +11,7 @@
 	"publisher": "sal",
 	"description": "PHP code actions provider for Visual Studio Code.",
 	"icon": "icon.png",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"engines": {
 		"vscode": "^1.63.0"
 	},
