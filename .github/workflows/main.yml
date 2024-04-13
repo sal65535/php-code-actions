@@ -37,11 +37,10 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Artifacts
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /home/runner/work/php-sculptor/php-sculptor/php-sculptor-${{ github.ref_name }}.vsix
-          asset_name: php-sculptor-${{ github.ref_name }}.vsix
-          asset_content_type: application/zip
+          files: |
+            app/build/outputs/apk/release/app-release-unsigned.apk
+            other/files/as/needed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
