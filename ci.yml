@@ -1,0 +1,20 @@
+name: Publish Extension
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: mcr.microsoft.com/vscode/devcontainers/typescript-node
+
+    steps:
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Package extension
+        run: vsce package
