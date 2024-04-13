@@ -8,7 +8,7 @@ export class AddSetterCodeAction implements EditorAction {
   vsCode: VsCode;
   classInspector: ClassInspector;
   setterCreator: SetterCreator;
-  title: string = 'Add Setter';
+  title: string = 'Setter';
   command: string = 'php-code-actions.addSetter';
 
   constructor(vsCode: VsCode, classInspector: ClassInspector, setterCreator: SetterCreator) {
@@ -27,8 +27,9 @@ export class AddSetterCodeAction implements EditorAction {
     }
 
     let properties = this.classInspector.getNonPublicProperties();
+    let propertiesWithoutSetter = this.classInspector.filterWithoutSetter(properties);
 
-    if (properties.size <= 0) {
+    if (propertiesWithoutSetter.size <= 0) {
       return false;
     }
 
@@ -73,17 +74,5 @@ export class AddSetterCodeAction implements EditorAction {
     await this.vsCode.insertText(setterOffset, getter);
 
     return Promise.resolve();
-  }
-
-  private filterWithoutSetter(properties: Map<string, Property>): Map<string, Property> {
-    const propertiesWithoutSetter = new Map<string, Property>();
-
-    properties.forEach((prop, propName) => {
-      if (!this.vsCode.getText().includes(prop.setterName())) {
-        return propertiesWithoutSetter.set(propName, prop);
-      }
-    });
-
-    return propertiesWithoutSetter;
   }
 }

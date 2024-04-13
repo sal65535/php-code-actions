@@ -34,8 +34,10 @@ export class AddGetterAndSetterCodeAction implements EditorAction {
         }
 
         let properties = this.classInspector.getNonPublicProperties();
+        let propertiesWithoutGetter = this.classInspector.filterWithoutGetter(properties);
+        let propertiesWithoutSetter = this.classInspector.filterWithoutSetter(properties);
 
-        if (properties.size <= 0) {
+        if (propertiesWithoutGetter.size <= 0 || propertiesWithoutSetter.size <= 0) {
             return false;
         }
 

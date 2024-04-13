@@ -27,8 +27,9 @@ export class AddGetterCodeAction implements EditorAction {
     }
 
     let properties = this.classInspector.getNonPublicProperties();
+    let propertiesWithoutGetter = this.classInspector.filterWithoutGetter(properties);
 
-    if (properties.size <= 0) {
+    if (propertiesWithoutGetter.size <= 0) {
       return false;
     }
 

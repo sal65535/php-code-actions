@@ -56,8 +56,8 @@ export const activate = (context: vscode.ExtensionContext) => {
   const setterCreator = new SetterCreator(propertyCreator, vsCode);
 
   actions.push(new AddConstructorCodeAction(vsCode, classInspector, constructorCreator));
-  actions.push(new AddGetterCodeAction(vsCode, classInspector, getterCreator));
   actions.push(new AddGetterAndSetterCodeAction(vsCode, classInspector, getterCreator, setterCreator));
+  actions.push(new AddGetterCodeAction(vsCode, classInspector, getterCreator));
   actions.push(new AddSetterCodeAction(vsCode, classInspector, setterCreator));
 
   context.subscriptions.push(
