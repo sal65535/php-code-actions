@@ -1,3 +1,4 @@
+import { CodeActionKind } from 'vscode';
 import ClassInspector from '../../application/ClassInspector';
 import GetterCreator from '../../application/GetterCreator';
 import SetterCreator from '../../application/SetterCreator';
@@ -33,7 +34,19 @@ export class AddGetterAndSetterCodeAction implements EditorAction {
             return false;
         }
 
+        let properties = this.classInspector.getNonPublicProperties();
+        let propertiesWithoutGetter = this.classInspector.filterWithoutGetter(properties);
+        let propertiesWithoutSetter = this.classInspector.filterWithoutSetter(properties);
+
+        if (propertiesWithoutGetter.size <= 0 || propertiesWithoutSetter.size <= 0) {
+            return false;
+        }
+
         return true;
+    }
+
+    getKind(): CodeActionKind {
+        return CodeActionKind.QuickFix;
     }
 
     getTitle(): string {

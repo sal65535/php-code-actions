@@ -7,7 +7,7 @@ import VsCode from '../domain/VsCode';
 import RegexpHelper from './RegexpHelper';
 
 export default class ClassInspector {
-  constructor(private vscode: VsCode, private regexpHelper: RegexpHelper) {}
+  constructor(private vsCode: VsCode, private regexpHelper: RegexpHelper) { }
 
   getOffsetForProperty(): PositionOffset {
     const properties = this.getProperties();
@@ -15,7 +15,7 @@ export default class ClassInspector {
 
     if (0 === properties.size) {
       const regex = /([\w\W]*?)({)([\w\W]*)(})/gm;
-      let match: RegExpExecArray | null = regex.exec(this.vscode.getText());
+      let match: RegExpExecArray | null = regex.exec(this.vsCode.getText());
       if (null !== match) {
         const group = this.regexpHelper.getGroupOffset(match, 2);
         offset = group.end;
@@ -37,7 +37,7 @@ export default class ClassInspector {
   getOffsetForGetter(): PositionOffset {
     const regex = /([\w\W]*?)({)([\w\W]*)(})/gm;
 
-    let match: RegExpExecArray | null = regex.exec(this.vscode.getText());
+    let match: RegExpExecArray | null = regex.exec(this.vsCode.getText());
     let offset = new PositionOffset(0);
     if (null !== match) {
       const group = this.regexpHelper.getGroupOffset(match, 3);
@@ -48,7 +48,7 @@ export default class ClassInspector {
   }
 
   getConstructorGroupOffset(): GroupOffset | null {
-    const content = this.vscode.getText();
+    const content = this.vsCode.getText();
 
     const regex = /((\/\*\*((?!\/\*\*)[\s\S])*\*\/([\s]+))?((public)?(private)?\s*function\s*__construct\s*\([\w\W]+?\))\s*){/gm;
     let match: RegExpExecArray | null = regex.exec(content);
@@ -110,7 +110,7 @@ export default class ClassInspector {
     const properties = new Map<string, Property>();
 
     let match = null;
-    const text = this.vscode.getText();
+    const text = this.vsCode.getText();
     while ((match = regex.exec(text))) {
       const type = match[3] === undefined ? PropertyType.mixed : match[3].trim();
       const visibility: PropertyVisibility = match[4] as PropertyVisibility;
@@ -120,5 +120,30 @@ export default class ClassInspector {
     }
 
     return properties;
+  }
+
+  filterWithoutSetter(properties: Map<string, Property>): Map<string, Property> {
+    const propertiesWithoutSetter = new Map<string, Property>();
+
+    properties.forEach((prop, propName) => {
+      if (!this.vsCode.getText().includes(prop.setterName())) {
+        return propertiesWithoutSetter.set(propName, prop);
+      }
+    });
+
+    return propertiesWithoutSetter;
+  }
+
+  filterWithoutGetter(properties: Map<string, Property>): Map<string, Property> {
+    const propertiesWithoutGetter = new Map<string, Property>();
+
+    properties.forEach((prop, propName) => {
+      const regex = new RegExp(`return \\$this->${propName};`, 'g');
+      if (-1 === this.vsCode.getText().search(regex)) {
+        return propertiesWithoutGetter.set(propName, prop);
+      }
+    });
+
+    return propertiesWithoutGetter;
   }
 }

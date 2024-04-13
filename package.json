@@ -1,17 +1,17 @@
 {
-	"name": "php-code-actions",
-	"displayName": "PHP Code Actions",
+	"name": "php-sculptor",
+	"displayName": "PHP Sculptor",
 	"author": {
-		"email": "nicolasgamboa.a@gmail.com",
-		"name": "Nicolás Gamboa"
+		"email": "sal65535@protonmail.com",
+		"name": "Luca Saladino"
 	},
 	"repository": {
-		"url": "https://github.com/ganvoa/php-code-actions"
+		"url": "https://github.com/sal65535/php-sculptor"
 	},
-	"publisher": "ganvoa",
-	"description": "A very basic set of PHP Code Actions for VSCode",
+	"publisher": "sal",
+	"description": "PHP code actions provider for Visual Studio Code.",
 	"icon": "icon.png",
-	"version": "0.5.1",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.63.0"
 	},
@@ -22,42 +22,6 @@
 		"onLanguage:php"
 	],
 	"main": "./dist/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "php-code-actions.addConstructor",
-				"title": "Add Constructor"
-			},
-			{
-				"command": "php-code-actions.addProperty",
-				"title": "Add Property"
-			},
-			{
-				"command": "php-code-actions.addGetter",
-				"title": "Add Getter"
-			},
-			{
-				"command": "php-code-actions.addSetter",
-				"title": "Add Setter"
-			},
-			{
-				"command": "php-code-actions.replaceConstructor",
-				"title": "Replace Constructor"
-			}
-		],
-		"configuration": [
-			{
-				"title": "PHP Code Actions",
-				"properties": {
-					"php-code-actions.getter.addPrefix": {
-						"type": "boolean",
-						"default": true,
-						"description": "Adds 'get' prefix to generated getter function."
-					}
-				}
-			}
-		]
-	},
 	"license": "MIT",
 	"scripts": {
 		"vscode:prepublish": "yarn run package",

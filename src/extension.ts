@@ -31,7 +31,7 @@ class CodeActionProvider implements vscode.CodeActionProvider {
       const action = this.actions[index];
 
       if (action.runnable()) {
-        const vsCodeAction = new vscode.CodeAction(action.getTitle(), vscode.CodeActionKind.Refactor);
+        const vsCodeAction = new vscode.CodeAction(action.getTitle(), action.getKind());
         vsCodeAction.command = {
           command: action.getCommand(),
           title: action.getTitle()
@@ -56,8 +56,8 @@ export const activate = (context: vscode.ExtensionContext) => {
   const setterCreator = new SetterCreator(propertyCreator, vsCode);
 
   actions.push(new AddConstructorCodeAction(vsCode, classInspector, constructorCreator));
-  actions.push(new AddGetterCodeAction(vsCode, classInspector, getterCreator));
   actions.push(new AddGetterAndSetterCodeAction(vsCode, classInspector, getterCreator, setterCreator));
+  actions.push(new AddGetterCodeAction(vsCode, classInspector, getterCreator));
   actions.push(new AddSetterCodeAction(vsCode, classInspector, setterCreator));
 
   context.subscriptions.push(
