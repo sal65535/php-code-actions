@@ -1,18 +1,21 @@
 name: Release
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - uses: lannonbr/vsce-action@3.0.0
+        uses: actions/checkout@v4
+      - name: Node installation
+        uses: actions/setup-node@v4
         with:
-          args: "package --allow-star-activation"
-      - run: echo "name=$(ls | grep vsix | sort | tail -n 1)" >> $GITHUB_OUTPUT
-        id: identify-package
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: ${{steps.identify-package.outputs.name}}
+          node-version: 18.x
+      - name: Publish
+        run: npm run deploy
