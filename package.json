@@ -1,15 +1,15 @@
 {
-	"name": "php-code-actions",
+	"name": "php-sculptor",
 	"displayName": "PHP Sculptor",
 	"author": {
 		"email": "sal65535@protonmail.com",
 		"name": "Luca Saladino"
 	},
 	"repository": {
-		"url": "https://github.com/ganvoa/php-code-actions"
+		"url": "https://github.com/sal65535/php-sculptor"
 	},
 	"publisher": "sal",
-	"description": "Code actions provider for PHP.",
+	"description": "PHP code actions provider for Visual Studio Code.",
 	"icon": "icon.png",
 	"version": "1.0.0",
 	"engines": {
