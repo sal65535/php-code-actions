@@ -31,7 +31,7 @@ class CodeActionProvider implements vscode.CodeActionProvider {
       const action = this.actions[index];
 
       if (action.runnable()) {
-        const vsCodeAction = new vscode.CodeAction(action.getTitle(), vscode.CodeActionKind.Refactor);
+        const vsCodeAction = new vscode.CodeAction(action.getTitle(), action.getKind());
         vsCodeAction.command = {
           command: action.getCommand(),
           title: action.getTitle()

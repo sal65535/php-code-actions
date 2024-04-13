@@ -1,3 +1,4 @@
+import { CodeActionKind } from 'vscode';
 import ClassInspector from '../../application/ClassInspector';
 import GetterCreator from '../../application/GetterCreator';
 import SetterCreator from '../../application/SetterCreator';
@@ -42,6 +43,10 @@ export class AddGetterAndSetterCodeAction implements EditorAction {
         }
 
         return true;
+    }
+
+    getKind(): CodeActionKind {
+        return CodeActionKind.QuickFix;
     }
 
     getTitle(): string {

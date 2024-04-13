@@ -1,7 +1,7 @@
+import { CodeActionKind } from 'vscode';
 import ClassInspector from '../../application/ClassInspector';
 import GetterCreator from '../../application/GetterCreator';
 import EditorAction from '../../domain/EditorAction';
-import Property from '../../domain/Property';
 import VsCode from '../../domain/VsCode';
 
 export class AddGetterCodeAction implements EditorAction {
@@ -34,6 +34,10 @@ export class AddGetterCodeAction implements EditorAction {
     }
 
     return true;
+  }
+
+  getKind(): CodeActionKind {
+    return CodeActionKind.QuickFix;
   }
 
   getTitle(): string {
